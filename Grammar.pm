@@ -164,197 +164,252 @@ grammar Config {
   rule option:sym<auth-nxdomain>                     { 'auth-nxdomain'                     <yes-or-no> ';' }
   rule option:sym<nxdomain-redirect>                 { 'nxdomain-redirect'                 <string> ';' }
   rule option:sym<deallocate-on-exit>                { 'deallocate-on-exit'                <yes-or-no> ';' }
-#  rule option:sym<dialup dialup_option ; ]
-#  rule option:sym<fake-iquery <yes-or-no> ; ]
-#  rule option:sym<fetch-glue <yes-or-no> ; ]
-#  rule option:sym<flush-zones-on-shutdown <yes-or-no> ; ]
-#  rule option:sym<has-old-clients <yes-or-no> ; ]
-#  rule option:sym<host-statistics <yes-or-no> ; ]
-#  rule option:sym<host-statistics-max number ; ]
-#  rule option:sym<minimal-any <yes-or-no> ; ]
-#  rule option:sym<minimal-responses ( <yes-or-no> | no-auth | no-auth-recursive ) ; ]
-#  rule option:sym<multiple-cnames <yes-or-no> ; ]
-  rule option:sym<notify> { 'notify' [ <yes-or-no> | 'explicit' | 'master-only' ] ';' }
-#  rule option:sym<recursion <yes-or-no> ; ]
-#  rule option:sym<send-cookie <yes-or-no> ; ]
-#  rule option:sym<require-server-cookie <yes-or-no> ; ]
-#  rule option:sym<cookie-algorithm algorithm_id ; ]
-#  rule option:sym<cookie-secret secret_string ; ]
-#  rule option:sym<nocookie-udp-size number ; ]
-#  rule option:sym<request-nsid <yes-or-no> ; ]
-#  rule option:sym<rfc2308-type1 <yes-or-no> ; ]
-#  rule option:sym<use-id-pool <yes-or-no> ; ]
-#  rule option:sym<maintain-ixfr-base <yes-or-no> ; ]
-#  rule option:sym<ixfr-from-differences ( <yes-or-no> | master | slave ) ; ]
-#  rule option:sym<auto-dnssec ( allow | maintain | off ) ; ]
-#  rule option:sym<dnssec-enable <yes-or-no> ; ]
-#  rule option:sym<dnssec-validation ( <yes-or-no> | auto ) ; ]
-#  rule option:sym<dnssec-lookaside ( auto | no | domain trust-anchor domain ) ; ]
-#  rule option:sym<dnssec-must-be-secure domain <yes-or-no> ; ]
-#  rule option:sym<dnssec-accept-expired <yes-or-no> ; ]
-#  rule option:sym<forward ( only | first ) ; ]
-#  rule option:sym<forwarders { ( ip_addr [ port ip_port ] [ dscp ip_dscp ] ; ) ...  } ; ]
-#  rule option:sym<dual-stack-servers [ port ip_port ] [ dscp ip_dscp ] { ( ( domain-name | ip_addr ) [ port ip_port ] [ dscp ip_dscp ] ; ) ...  } ; ]
-  rule option:sym<check-names> { 'check-names' [ 'master' | 'slave' | 'response' ] [ 'warn' | 'fail' | 'ignore' ] ';' }
-#  rule option:sym<check-dup-records ( warn | fail | ignore ) ; ]
-#  rule option:sym<check-mx ( warn | fail | ignore ) ; ]
-#  rule option:sym<check-wildcard <yes-or-no> ; ]
-#  rule option:sym<check-integrity <yes-or-no> ; ]
-#  rule option:sym<check-mx-cname ( warn | fail | ignore ) ; ]
-#  rule option:sym<check-srv-cname ( warn | fail | ignore ) ; ]
-#  rule option:sym<check-sibling <yes-or-no> ; ]
-#  rule option:sym<check-spf ( warn | ignore ) ; ]
-#  rule option:sym<allow-new-zones <yes-or-no> ; ]
-  rule option:sym<allow-notify> { 'allow-notify' '{' <address-match-list> '}' ';' }
-  rule option:sym<allow-query> { 'allow-query' '{' <address-match-list> '}' ';' }
-#  rule option:sym<allow-query-on { <address-match-list> } ; ]
-  rule option:sym<allow-query-cache> { 'allow-query-cache' '{' <address-match-list> '}' ';' }
-#  rule option:sym<allow-query-cache-on { <address-match-list> } ; ]
-  rule option:sym<allow-transfer> { 'allow-transfer' '{' <address-match-list> '}' ';' }
-  rule option:sym<allow-recursion> { 'allow-recursion' '{' <address-match-list> '}' ';' }
-#  rule option:sym<allow-recursion-on { <address-match-list> } ; ]
-#  rule option:sym<allow-update { <address-match-list> } ]
-#  rule option:sym<allow-update-forwarding { <address-match-list> } ; ]
-#  rule option:sym<automatic-interface-scan <yes-or-no> ; ]
-#  rule option:sym<geoip-use-ecs <yes-or-no> ; ]
-#  rule option:sym<update-check-ksk <yes-or-no> ; ]
-#  rule option:sym<dnssec-update-mode ( maintain | no-resign ) ; ]
-#  rule option:sym<dnssec-dnskey-kskonly <yes-or-no> ; ]
-#  rule option:sym<dnssec-loadkeys-interval number ; ]
-#  rule option:sym<dnssec-secure-to-insecure <yes-or-no> ; ]
-#  rule option:sym<try-tcp-refresh <yes-or-no> ; ]
-#  rule option:sym<allow-v6-synthesis { <address-match-list> } ; ]
-#  rule option:sym<blackhole { <address-match-list> } ; ]
-#  rule option:sym<keep-response-order { <address-match-list> } ; ]
-#  rule option:sym<no-case-compress { <address-match-list> } ; ]
-#  rule option:sym<message-compression <yes-or-no> ; ]
-#  rule option:sym<use-v4-udp-ports { port_list } ; ]
-#  rule option:sym<avoid-v4-udp-ports { port_list } ; ]
-#  rule option:sym<use-v6-udp-ports { port_list } ; ]
-#  rule option:sym<avoid-v6-udp-ports { port_list } ; ]
-#  rule option:sym<listen-on [ port ip_port ] [ dscp ip_dscp ] { <address-match-list> } ; ]
+  rule option:sym<dialup>                            { 'dialup'                            [   'yes'
+                                                                                             | 'no'
+                                                                                             | 'notify'
+                                                                                             | 'notify-passive'
+                                                                                             | 'refresh'
+                                                                                             | 'passive'
+                                                                                           ] ';'
+                                                     }
+  rule option:sym<fake-iquery>                       { 'fake-iquery'                       <yes-or-no> ';' }
+  rule option:sym<fetch-glue>                        { 'fetch-glue'                        <yes-or-no> ';' }
+  rule option:sym<flush-zones-on-shutdown>           { 'flush-zones-on-shutdown'           <yes-or-no> ';' }
+  rule option:sym<has-old-clients>                   { 'has-old-clients'                   <yes-or-no> ';' }
+  rule option:sym<host-statistics>                   { 'host-statistics'                   <yes-or-no> ';' }
+  rule option:sym<host-statistics-max>               { 'host-statistics-max'               <number> ';' }
+  rule option:sym<minimal-any>                       { 'minimal-any'                       <yes-or-no> ';' }
+  rule option:sym<minimal-responses>                 { 'minimal-responses'                 [   <yes-or-no>
+                                                                                             | 'no-auth'
+                                                                                             | 'no-auth-recursive'
+                                                                                           ] ';'
+                                                     }
+  rule option:sym<multiple-cnames>                   { 'multiple-cnames'                   <yes-or-no> ';' }
+  rule option:sym<notify>                            { 'notify'                            [   <yes-or-no>
+                                                                                             | 'explicit'
+                                                                                             | 'master-only'
+                                                                                           ] ';'
+                                                     }
+  rule option:sym<recursion>                         { 'recursion'                         <yes-or-no> ';' }
+  rule option:sym<send-cookie>                       { 'send-cookie'                       <yes-or-no> ';' }
+  rule option:sym<require-server-cookie>             { 'require-server-cookie'             <yes-or-no> ';' }
+  rule option:sym<cookie-algorithm>                  { 'cookie-algorithm'                  <algorithm-id> ';' }
+  rule option:sym<cookie-secret>                     { 'cookie-secret'                     <secret-string> ';' }
+  rule option:sym<nocookie-udp-size>                 { 'nocookie-udp-size'                 <number> ';' }
+  rule option:sym<request-nsid>                      { 'request-nsid'                      <yes-or-no> ';' }
+  rule option:sym<rfc2308-type1>                     { 'rfc2308-type1'                     <yes-or-no> ';' }
+  rule option:sym<use-id-pool>                       { 'use-id-pool'                       <yes-or-no> ';' }
+  rule option:sym<maintain-ixfr-base>                { 'maintain-ixfr-base'                <yes-or-no> ';' }
+  rule option:sym<ixfr-from-differences>             { 'ixfr-from-differences'             [   <yes-or-no>
+                                                                                             | 'master'
+                                                                                             | 'slave'
+                                                                                           ] ';'
+                                                     }
+  rule option:sym<auto-dnssec>                       { 'auto-dnssec'                       [   'allow'
+                                                                                             | 'maintain'
+                                                                                             | 'off'
+                                                                                           ] ';'
+                                                     }
+  rule option:sym<dnssec-enable>                     { 'dnssec-enable'                     <yes-or-no> ';' }
+  rule option:sym<dnssec-validation>                 { 'dnssec-validation'                 [ <yes-or-no> | 'auto' ] ';' }
+  rule option:sym<dnssec-lookaside>                  { 'dnssec-lookaside'                  [   'auto'
+                                                                                             | 'no'
+                                                                                             | <domain> 'trust-anchor' <domain>
+                                                                                           ] ';'
+                                                     }
+  rule option:sym<dnssec-must-be-secure>             { 'dnssec-must-be-secure'             <domain> <yes-or-no> ';' }
+  rule option:sym<dnssec-accept-expired>             { 'dnssec-accept-expired'             <yes-or-no> ';' }
+  rule option:sym<forward>                           { 'forward'                           [ 'only' | 'first' ] ';' }
+  rule option:sym<forwarders>                        { 'forwarders'                        '{' [ <ip-addr>
+                                                                                                 [
+                                                                                                     [ 'port' <ip-port> ]
+                                                                                                   | [ 'dscp' <ip-dscp> ]
+                                                                                                 ]*
+                                                                                                 ';' 
+                                                                                               ]+
+                                                                                            '}' ';'
+                                                     }
+  rule option:sym<dual-stack-servers>                { 'dual-stack-servers'                [
+                                                                                               [ 'port' <ip-port> ]
+                                                                                             | [ 'dscp' <ip-dscp> ]
+                                                                                           ]*
+                                                                                           '{' [ [ <domain-name> | <ip-addr> ]
+                                                                                                 [
+                                                                                                     [ 'port' <ip-port> ] 
+                                                                                                   | [ 'dscp' <ip-dscp> ] 
+                                                                                                 ]*
+                                                                                                 ';'
+                                                                                               ]+
+                                                                                           '}' ';'
+                                                     }
+  rule option:sym<check-names>                       { 'check-names'                       [   'master'
+                                                                                             | 'slave'
+                                                                                             | 'response'
+                                                                                           ]
+                                                                                           [ 'warn'
+                                                                                             | 'fail'
+                                                                                             | 'ignore'
+                                                                                           ] ';'
+                                                     }
+  rule option:sym<check-dup-records>                 { 'check-dup-records'                 [ 'warn' | 'fail' | 'ignore' ] ';' }
+  rule option:sym<check-mx>                          { 'check-mx'                          [ 'warn' | 'fail' | 'ignore' ] ';' }
+  rule option:sym<check-wildcard>                    { 'check-wildcard'                    <yes-or-no> ';' }
+  rule option:sym<check-integrity>                   { 'check-integrity'                   <yes-or-no> ';' }
+  rule option:sym<check-mx-cname>                    { 'check-mx-cname'                    [ 'warn' | 'fail' | 'ignore' ] ';' }
+  rule option:sym<check-srv-cname>                   { 'check-srv-cname'                   [ 'warn' | 'fail' | 'ignore' ] ';' }
+  rule option:sym<check-sibling>                     { 'check-sibling'                     <yes-or-no> ';' }
+  rule option:sym<check-spf>                         { 'check-spf'                         [ 'warn' | 'ignore' ] ';' }
+  rule option:sym<allow-new-zones>                   { 'allow-new-zones'                   <yes-or-no> ';' }
+  rule option:sym<allow-notify>                      { 'allow-notify'                      '{' <address-match-list> '}' ';' }
+  rule option:sym<allow-query>                       { 'allow-query'                       '{' <address-match-list> '}' ';' }
+  rule option:sym<allow-query-on>                    { 'allow-query-on'                    '{' <address-match-list> '}' ';' }
+  rule option:sym<allow-query-cache>                 { 'allow-query-cache'                 '{' <address-match-list> '}' ';' }
+  rule option:sym<allow-query-cache-on>              { 'allow-query-cache-on'              '{' <address-match-list> '}' ';' }
+  rule option:sym<allow-transfer>                    { 'allow-transfer'                    '{' <address-match-list> '}' ';' }
+  rule option:sym<allow-recursion>                   { 'allow-recursion'                   '{' <address-match-list> '}' ';' }
+  rule option:sym<allow-recursion-on>                { 'allow-recursion-on'                '{' <address-match-list> '}' ';' }
+  rule option:sym<allow-update>                      { 'allow-update'                      '{' <address-match-list> '}' ';' }
+  rule option:sym<allow-update-forwarding>           { 'allow-update-forwarding'           '{' <address-match-list> '}' ';' }
+  rule option:sym<automatic-interface-scan>          { 'automatic-interface-scan'          <yes-or-no> ';' }
+  rule option:sym<geoip-use-ecs>                     { 'geoip-use-ecs'                     <yes-or-no> ';' }
+  rule option:sym<update-check-ksk>                  { 'update-check-ksk'                   <yes-or-no> ';' }
+#  rule option:sym<dnssec-update-mode ( maintain | no-resign ) ';' }
+#  rule option:sym<dnssec-dnskey-kskonly <yes-or-no> ';' }
+#  rule option:sym<dnssec-loadkeys-interval <number> ';' }
+#  rule option:sym<dnssec-secure-to-insecure <yes-or-no> ';' }
+#  rule option:sym<try-tcp-refresh <yes-or-no> ';' }
+#  rule option:sym<allow-v6-synthesis { <address-match-list> } ';' }
+#  rule option:sym<blackhole { <address-match-list> } ';' }
+#  rule option:sym<keep-response-order { <address-match-list> } ';' }
+#  rule option:sym<no-case-compress { <address-match-list> } ';' }
+#  rule option:sym<message-compression <yes-or-no> ';' }
+#  rule option:sym<use-v4-udp-ports { port_list } ';' }
+#  rule option:sym<avoid-v4-udp-ports { port_list } ';' }
+#  rule option:sym<use-v6-udp-ports { port_list } ';' }
+#  rule option:sym<avoid-v6-udp-ports { port_list } ';' }
+#  rule option:sym<listen-on [ port ip_port ] [ dscp ip_dscp ] { <address-match-list> } ';' }
   rule option:sym<listen-on-v6> { 'listen-on-v6' [ [ 'port' <ip-port> ] | [ 'dscp' <ip-dscp> ] ]* '{' <address-match-list> '}' ';' }
 #  rule option:sym<query-source ( [ address ] ( ip4_addr | * ) ) [ port ( ip_port | * ) ] [ dscp ip_dscp ] ] 
 #  rule option:sym<query-source-v6 ( [ address ] ( ip6_addr | * ) ) [ port ( ip_port | * ) ] [ dscp ip_dscp ] ] ;
-#  rule option:sym<use-queryport-pool <yes-or-no> ; ]
-#  rule option:sym<queryport-pool-ports number ; ]
-#  rule option:sym<queryport-pool-updateinterval number ; ]
-#  rule option:sym<max-records number ; ]
-#  rule option:sym<max-transfer-time-in number ; ]
-#  rule option:sym<max-transfer-time-out number ; ]
-#  rule option:sym<max-transfer-idle-in number ; ]
-#  rule option:sym<max-transfer-idle-out number ; ]
-#  rule option:sym<reserved-sockets number ; ]
+#  rule option:sym<use-queryport-pool <yes-or-no> ';' }
+#  rule option:sym<queryport-pool-ports <number> ';' }
+#  rule option:sym<queryport-pool-updateinterval <number> ';' }
+#  rule option:sym<max-records <number> ';' }
+#  rule option:sym<max-transfer-time-in <number> ';' }
+#  rule option:sym<max-transfer-time-out <number> ';' }
+#  rule option:sym<max-transfer-idle-in <number> ';' }
+#  rule option:sym<max-transfer-idle-out <number> ';' }
+#  rule option:sym<reserved-sockets <number> ';' }
   rule option:sym<recursive-clients> { 'recursive-clients' <number> ';' }
-#  rule option:sym<tcp-clients number ; ]
-#  rule option:sym<clients-per-query number ; ]
-#  rule option:sym<max-clients-per-query number ; ]
-#  rule option:sym<fetches-per-server number [ ( drop | fail ) ] ; ]
-#  rule option:sym<fetches-per-zone number [ ( drop | fail ) ] ; ]
-#  rule option:sym<fetch-quota-params number fixedpoint fixedpoint fixedpoint ; ]
-#  rule option:sym<notify-rate number ; ]
-#  rule option:sym<startup-notify-rate number ; ]
-#  rule option:sym<serial-query-rate number ; ]
-#  rule option:sym<serial-queries number ; ]
-#  rule option:sym<tcp-listen-queue number ; ]
-#  rule option:sym<transfer-format ( one-answer | many-answers ) ; ]
-#  rule option:sym<transfer-message-size number ; ]
-#  rule option:sym<transfers-in number ; ]
-#  rule option:sym<transfers-out number ; ]
-#  rule option:sym<transfers-per-ns number ; ]
+#  rule option:sym<tcp-clients <number> ';' }
+#  rule option:sym<clients-per-query <number> ';' }
+#  rule option:sym<max-clients-per-query <number> ';' }
+#  rule option:sym<fetches-per-server <number> [ ( drop | fail ) ] ';' }
+#  rule option:sym<fetches-per-zone <number> [ ( drop | fail ) ] ';' }
+#  rule option:sym<fetch-quota-params <number> fixedpoint fixedpoint fixedpoint ';' }
+#  rule option:sym<notify-rate <number> ';' }
+#  rule option:sym<startup-notify-rate <number> ';' }
+#  rule option:sym<serial-query-rate <number> ';' }
+#  rule option:sym<serial-queries <number> ';' }
+#  rule option:sym<tcp-listen-queue <number> ';' }
+#  rule option:sym<transfer-format ( one-answer | many-answers ) ';' }
+#  rule option:sym<transfer-message-size <number> ';' }
+#  rule option:sym<transfers-in <number> ';' }
+#  rule option:sym<transfers-out <number> ';' }
+#  rule option:sym<transfers-per-ns <number> ';' }
 #  rule option:sym<transfer-source ( ip4_addr | * )
-#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ; ]
+#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ';' }
 #  rule option:sym<transfer-source-v6 ( ip6_addr | * )
-#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ; ]
+#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ';' }
 #  rule option:sym<alt-transfer-source ( ip4_addr | * )
-#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ; ]
+#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ';' }
 #  rule option:sym<alt-transfer-source-v6 ( ip6_addr | * )
-#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ; ]
-#  rule option:sym<use-alt-transfer-source <yes-or-no> ; ]
-#  rule option:sym<notify-delay seconds ; ]
+#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ';' }
+#  rule option:sym<use-alt-transfer-source <yes-or-no> ';' }
+#  rule option:sym<notify-delay seconds ';' }
 #  rule option:sym<notify-source ( ip4_addr | * )
-#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ; ]
+#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ';' }
 #  rule option:sym<notify-source-v6 ( ip6_addr | * )
-#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ; ]
+#  rule option:sym<port ip_port ] [ dscp ip_dscp ] ';' }
   rule option:sym<notify-to-soa> { 'notify-to-soa' <yes-or-no> ';' }
-#  rule option:sym<also-notify [ port ip_port] [ dscp ip_dscp] { ( masters | ip_addr [ port ip_port ] ) [ key key_name ] ; ...  } ; ]
-#  rule option:sym<max-ixfr-log-size number ; ]
-#  rule option:sym<max-journal-size size_spec ; ]
-#  rule option:sym<coresize size_spec ; ]
-#  rule option:sym<datasize size_spec ; ]
-#  rule option:sym<files size_spec ; ]
-#  rule option:sym<stacksize size_spec ; ]
-#  rule option:sym<cleaning-interval number ; ]
-#  rule option:sym<heartbeat-interval number ; ]
-#  rule option:sym<interface-interval number ; ]
-#  rule option:sym<statistics-interval number ; ]
-#  rule option:sym<topology { <address-match-list> } ; ]
-#  rule option:sym<sortlist { <address-match-list> } ; ]
-#  rule option:sym<rrset-order { order_spec ; ... } ; ]
-#  rule option:sym<lame-ttl number ; ]
-#  rule option:sym<max-ncache-ttl number ; ]
-#  rule option:sym<max-cache-ttl number ; ]
-#  rule option:sym<max-zone-ttl ( unlimited | number ) ; ]
-#  rule option:sym<serial-update-method ( increment | unixtime | date ) ; ]
-#  rule option:sym<servfail-ttl number ; ]
-#  rule option:sym<sig-validity-interval number [number] ; ]
-#  rule option:sym<sig-signing-nodes number ; ]
-#  rule option:sym<sig-signing-signatures number ; ]
-#  rule option:sym<sig-signing-type number ; ]
-#  rule option:sym<min-roots number ; ]
-#  rule option:sym<use-ixfr <yes-or-no> ; ]
-#  rule option:sym<provide-ixfr <yes-or-no> ; ]
-#  rule option:sym<request-ixfr <yes-or-no> ; ]
-#  rule option:sym<request-expire <yes-or-no> ; ]
-#  rule option:sym<treat-cr-as-space <yes-or-no> ; ]
-#  rule option:sym<min-refresh-time number ; ]
-#  rule option:sym<max-refresh-time number ; ]
-#  rule option:sym<min-retry-time number ; ]
-#  rule option:sym<max-retry-time number ; ]
-#  rule option:sym<nta-lifetime duration ; ]
-#  rule option:sym<nta-recheck duration ; ]
-#  rule option:sym<port ip_port ; ]
-#  rule option:sym<dscp ip_dscp ; ]
-#  rule option:sym<additional-from-auth <yes-or-no> ; ]
-#  rule option:sym<additional-from-cache <yes-or-no> ; ]
-#  rule option:sym<random-device <path-name> ; ]
-#  rule option:sym<max-cache-size size_or_percent ; ]
-#  rule option:sym<match-mapped-addresses <yes-or-no> ; ]
-#  rule option:sym<filter-aaaa-on-v4 ( <yes-or-no> | break-dnssec ) ; ]
-#  rule option:sym<filter-aaaa-on-v6 ( <yes-or-no> | break-dnssec ) ; ]
-#  rule option:sym<filter-aaaa { <address-match-list> } ; ]
-#  rule option:sym<dns64 ipv6-prefix { [ clients { <address-match-list> } ; ] [ mapped { <address-match-list> } ; ] [ exclude { <address-match-list> } ; ] [ suffix ip6-address ; ] [ recursive-only <yes-or-no> ; ] [ break-dnssec <yes-or-no> ; ] } ; ]
+#  rule option:sym<also-notify [ port ip_port] [ dscp ip_dscp] { ( masters | ip_addr [ port ip_port ] ) [ key key_name ] ; ...  } ';' }
+#  rule option:sym<max-ixfr-log-size <number> ';' }
+#  rule option:sym<max-journal-size size_spec ';' }
+#  rule option:sym<coresize size_spec ';' }
+#  rule option:sym<datasize size_spec ';' }
+#  rule option:sym<files size_spec ';' }
+#  rule option:sym<stacksize size_spec ';' }
+#  rule option:sym<cleaning-interval <number> ';' }
+#  rule option:sym<heartbeat-interval <number> ';' }
+#  rule option:sym<interface-interval <number> ';' }
+#  rule option:sym<statistics-interval <number> ';' }
+#  rule option:sym<topology { <address-match-list> } ';' }
+#  rule option:sym<sortlist { <address-match-list> } ';' }
+#  rule option:sym<rrset-order { order_spec ; ... } ';' }
+#  rule option:sym<lame-ttl <number> ';' }
+#  rule option:sym<max-ncache-ttl <number> ';' }
+#  rule option:sym<max-cache-ttl <number> ';' }
+#  rule option:sym<max-zone-ttl ( unlimited | <number> ) ';' }
+#  rule option:sym<serial-update-method ( increment | unixtime | date ) ';' }
+#  rule option:sym<servfail-ttl <number> ';' }
+#  rule option:sym<sig-validity-interval <number> [number] ';' }
+#  rule option:sym<sig-signing-nodes <number> ';' }
+#  rule option:sym<sig-signing-signatures <number> ';' }
+#  rule option:sym<sig-signing-type <number> ';' }
+#  rule option:sym<min-roots <number> ';' }
+#  rule option:sym<use-ixfr <yes-or-no> ';' }
+#  rule option:sym<provide-ixfr <yes-or-no> ';' }
+#  rule option:sym<request-ixfr <yes-or-no> ';' }
+#  rule option:sym<request-expire <yes-or-no> ';' }
+#  rule option:sym<treat-cr-as-space <yes-or-no> ';' }
+#  rule option:sym<min-refresh-time <number> ';' }
+#  rule option:sym<max-refresh-time <number> ';' }
+#  rule option:sym<min-retry-time <number> ';' }
+#  rule option:sym<max-retry-time <number> ';' }
+#  rule option:sym<nta-lifetime duration ';' }
+#  rule option:sym<nta-recheck duration ';' }
+#  rule option:sym<port ip_port ';' }
+#  rule option:sym<dscp ip_dscp ';' }
+#  rule option:sym<additional-from-auth <yes-or-no> ';' }
+#  rule option:sym<additional-from-cache <yes-or-no> ';' }
+#  rule option:sym<random-device <path-name> ';' }
+#  rule option:sym<max-cache-size size_or_percent ';' }
+#  rule option:sym<match-mapped-addresses <yes-or-no> ';' }
+#  rule option:sym<filter-aaaa-on-v4 ( <yes-or-no> | break-dnssec ) ';' }
+#  rule option:sym<filter-aaaa-on-v6 ( <yes-or-no> | break-dnssec ) ';' }
+#  rule option:sym<filter-aaaa { <address-match-list> } ';' }
+#  rule option:sym<dns64 ipv6-prefix { [ clients { <address-match-list> } ; ] [ mapped { <address-match-list> } ; ] [ exclude { <address-match-list> } ; ] [ suffix ip6-address ; ] [ recursive-only <yes-or-no> ; ] [ break-dnssec <yes-or-no> ; ] } ';' }
 #  rule option:sym<dns64-server name ]
 #  rule option:sym<dns64-contact name ]
-#  rule option:sym<preferred-glue ( A | AAAA | none ); ]
-#  rule option:sym<edns-udp-size number ; ]
-#  rule option:sym<max-udp-size number ; ]
-#  rule option:sym<max-rsa-exponent-size number ; ]
-#  rule option:sym<root-delegation-only [ exclude { namelist } ] ; ]
-#  rule option:sym<querylog <yes-or-no> ; ]
-#  rule option:sym<disable-algorithms domain { algorithm ; ... } ; ]
-#  rule option:sym<disable-ds-digests domain { digest_type ; ... } ; ]
-#  rule option:sym<acache-enable <yes-or-no> ; ]
-#  rule option:sym<acache-cleaning-interval number ; ]
-#  rule option:sym<max-acache-size size_spec ; ]
-#  rule option:sym<max-recursion-depth number ; ]
-#  rule option:sym<max-recursion-queries number ; ]
+#  rule option:sym<preferred-glue ( A | AAAA | none )';' }
+#  rule option:sym<edns-udp-size <number> ';' }
+#  rule option:sym<max-udp-size <number> ';' }
+#  rule option:sym<max-rsa-exponent-size <number> ';' }
+#  rule option:sym<root-delegation-only [ exclude { namelist } ] ';' }
+#  rule option:sym<querylog <yes-or-no> ';' }
+#  rule option:sym<disable-algorithms domain { algorithm ; ... } ';' }
+#  rule option:sym<disable-ds-digests domain { digest_type ; ... } ';' }
+#  rule option:sym<acache-enable <yes-or-no> ';' }
+#  rule option:sym<acache-cleaning-interval <number> ';' }
+#  rule option:sym<max-acache-size size_spec ';' }
+#  rule option:sym<max-recursion-depth <number> ';' }
+#  rule option:sym<max-recursion-queries <number> ';' }
   rule option:sym<masterfile-format> { 'masterfile-format' [ 'text' | 'raw' | 'map' ] ';' }
-#  rule option:sym<masterfile-style ( relative | full ) ; ]
-#  rule option:sym<empty-server name ; ]
-#  rule option:sym<empty-contact name ; ]
-#  rule option:sym<empty-zones-enable <yes-or-no> ; ]
-#  rule option:sym<disable-empty-zone zone_name ; ]
-#  rule option:sym<zero-no-soa-ttl <yes-or-no> ; ]
-#  rule option:sym<zero-no-soa-ttl-cache <yes-or-no> ; ]
-#  rule option:sym<resolver-query-timeout number ; ]
-#  rule option:sym<deny-answer-addresses { <address-match-list> } [ except-from { namelist } ] ; ]
-#  rule option:sym<deny-answer-aliases { namelist } [ except-from { namelist } ] ; ]
-#  rule option:sym<prefetch number [ number ] ; ]
-#  rule option:sym<rate-limit { [ responses-per-second number ; ] [ referrals-per-second number ; ] [ nodata-per-second number ; ] [ nxdomains-per-second number ; ] [ errors-per-second number ; ] [ all-per-second number ; ] [ window number ; ] [ log-only <yes-or-no> ; ] [ qps-scale number ; ] [ ipv4-prefix-length number ; ] [ ipv6-prefix-length number ; ] [ slip number ; ] [ exempt-clients { <address-match-list> } ; ] [ max-table-size number ; ] [ min-table-size number ; ] } ; ]
-#  rule option:sym<response-policy { zone zone_name [ policy ( given | disabled | passthru | drop | tcp-only | nxdomain | nodata | cname domain ) ] [ recursive-only <yes-or-no> ] [ log <yes-or-no> ] [ max-policy-ttl number ] ; ...  } [ recursive-only <yes-or-no> ] [ max-policy-ttl number ] [ break-dnssec <yes-or-no> ] [ min-ns-dots number ] [ nsip-wait-recurse <yes-or-no> ] [ qname-wait-recurse <yes-or-no> ] ; ]
-#  rule option:sym<catalog-zones { zone quoted_string [ default-masters [ port ip_port ] [ dscp ip_dscp ] { ( masters_list | ip_addr [port ip_port] [ key key_name] ) ; ...  } ] [ zone-directory <path-name> ] [ in-memory <yes-or-no> ] [ min-update-interval interval ] ; ...  } ; ]
-#  rule option:sym<v6-bias number ; ]
+#  rule option:sym<masterfile-style ( relative | full ) ';' }
+#  rule option:sym<empty-server name ';' }
+#  rule option:sym<empty-contact name ';' }
+#  rule option:sym<empty-zones-enable <yes-or-no> ';' }
+#  rule option:sym<disable-empty-zone zone_name ';' }
+#  rule option:sym<zero-no-soa-ttl <yes-or-no> ';' }
+#  rule option:sym<zero-no-soa-ttl-cache <yes-or-no> ';' }
+#  rule option:sym<resolver-query-timeout <number> ';' }
+#  rule option:sym<deny-answer-addresses { <address-match-list> } [ except-from { namelist } ] ';' }
+#  rule option:sym<deny-answer-aliases { namelist } [ except-from { namelist } ] ';' }
+#  rule option:sym<prefetch <number> [ <number> ] ';' }
+#  rule option:sym<rate-limit { [ responses-per-second <number> ; ] [ referrals-per-second <number> ; ] [ nodata-per-second <number> ; ] [ nxdomains-per-second <number> ; ] [ errors-per-second <number> ; ] [ all-per-second <number> ; ] [ window <number> ; ] [ log-only <yes-or-no> ; ] [ qps-scale <number> ; ] [ ipv4-prefix-length <number> ; ] [ ipv6-prefix-length <number> ; ] [ slip <number> ; ] [ exempt-clients { <address-match-list> } ; ] [ max-table-size <number> ; ] [ min-table-size <number> ; ] } ';' }
+#  rule option:sym<response-policy { zone zone_name [ policy ( given | disabled | passthru | drop | tcp-only | nxdomain | nodata | cname domain ) ] [ recursive-only <yes-or-no> ] [ log <yes-or-no> ] [ max-policy-ttl <number> ] ; ...  } [ recursive-only <yes-or-no> ] [ max-policy-ttl <number> ] [ break-dnssec <yes-or-no> ] [ min-ns-dots <number> ] [ nsip-wait-recurse <yes-or-no> ] [ qname-wait-recurse <yes-or-no> ] ';' }
+#  rule option:sym<catalog-zones { zone quoted_string [ default-masters [ port ip_port ] [ dscp ip_dscp ] { ( masters_list | ip_addr [port ip_port] [ key key_name] ) ; ...  } ] [ zone-directory <path-name> ] [ in-memory <yes-or-no> ] [ min-update-interval interval ] ; ...  } ';' }
+#  rule option:sym<v6-bias <number> ';' }
 
 
   regex server {
