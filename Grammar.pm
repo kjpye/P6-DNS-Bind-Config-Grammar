@@ -636,11 +636,16 @@ grammar Config {
   }
 
   token string {
-    '"' <-[ " \n ]>+ '"'
+    '"'
+    [
+      | <-[ \\ " \n ]>
+      | \\ .
+    ] +
+    '"'
   }
 
   token class { :i
-    '"' 'in' '"'
+    '"in"'
   }
 }
 
@@ -674,12 +679,12 @@ grammar Config {
 #};
 #
 #END
-my $teststring = 'alfa.conf'.IO.slurp;
-#my $teststring = Q:to/END/;
-#key "rndckey" {
-#        algorithm       "hmac-md5";
-#        secret          "rJigjRyZP3DCNiprNZC5ijKmWHukty+Bt9dpZ1sbh38=";
-#};
-#END
+#my $teststring = 'alfa.conf'.IO.slurp;
+my $teststring = Q:to/END/;
+key "rndckey" {
+        algorithm       "hmac-md5";
+        secret          "rJigjRyZP3DCNiprNZC5ijKmWHukty+Bt9dpZ1sbh38=";
+};
+END
 Config.parse($teststring);
 #dd ~$/;
